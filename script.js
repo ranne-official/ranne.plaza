@@ -21,6 +21,21 @@ function renderChips(id, items, cls) {
 renderChips("techSkills", technicalSkills, "chip--tech");
 renderChips("softSkills", softSkills, "chip--soft");
 
+// ===== Theme toggle =====
+const themeToggle = document.getElementById("themeToggle");
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    const next = isLight ? "dark" : "light";
+    if (next === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  });
+}
+
 // ===== Year =====
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = "2026";
