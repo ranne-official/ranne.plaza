@@ -14,6 +14,9 @@
   --hero-glow: #1c1c22;
   --nav-bg: rgba(11, 11, 13, 0.6);
   --nav-bg-scroll: rgba(11, 11, 13, 0.85);
+  --grid-dot: rgba(255, 255, 255, 0.09);
+  --glow: rgba(240, 54, 44, 0.22);
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --radius: 18px;
   --container: 1180px;
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
@@ -33,6 +36,8 @@
   --hero-glow: #ececf2;
   --nav-bg: rgba(255, 255, 255, 0.7);
   --nav-bg-scroll: rgba(255, 255, 255, 0.9);
+  --grid-dot: rgba(0, 0, 0, 0.07);
+  --glow: rgba(240, 54, 44, 0.16);
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
 }
 
@@ -270,4 +275,97 @@ a.contact__card:hover { transform: translateY(-3px); border-color: var(--red); b
 @media (max-width: 460px) {
   .about__stats { gap: 30px; }
   .hero__name { font-size: 22vw; }
+}
+
+/* ============================================================
+   FUTURISTIC / TECH LAYER
+   ============================================================ */
+
+/* Scroll progress bar */
+.scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200; background: transparent; pointer-events: none; }
+.scroll-progress span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--red), #ff7a5c); box-shadow: 0 0 12px var(--glow); transition: width 0.1s linear; }
+
+/* Film grain */
+.grain {
+  position: fixed; inset: 0; z-index: 150; pointer-events: none; opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hero tech background */
+.tech-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.tech-bg__grid {
+  position: absolute; inset: -2px;
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(circle at 72% 38%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(circle at 72% 38%, #000 0%, transparent 72%);
+}
+.tech-bg__glow { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; }
+.tech-bg__glow--1 { width: 460px; height: 460px; background: radial-gradient(circle, var(--glow), transparent 70%); top: -120px; right: 8%; animation: floatGlow 14s ease-in-out infinite; }
+.tech-bg__glow--2 { width: 380px; height: 380px; background: radial-gradient(circle, rgba(90,120,255,0.16), transparent 70%); bottom: -120px; left: 6%; animation: floatGlow 18s ease-in-out infinite reverse; }
+@keyframes floatGlow { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px,30px) scale(1.12); } }
+.tech-bg__spot { position: absolute; inset: 0; background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 35%), var(--glow), transparent 65%); opacity: 0.7; transition: background 0.12s ease; }
+.tech-bg__scan {
+  position: absolute; inset: 0; opacity: 0.4; mix-blend-mode: overlay;
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(255,255,255,0.025) 3px 4px);
+}
+
+/* HUD viewfinder corners */
+.hud { position: absolute; inset: 90px 26px 26px; z-index: 2; pointer-events: none; }
+.hud__c { position: absolute; width: 26px; height: 26px; border: 2px solid var(--line-strong); }
+.hud__c--tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.hud__c--tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.hud__c--bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.hud__c--br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+/* Hero mono readout */
+.hero__readout { position: absolute; left: 28px; bottom: 30px; z-index: 3; display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 1.5px; color: var(--muted-dim); }
+.hero__readout-item { display: flex; align-items: center; gap: 8px; }
+.hero__readout-item i { width: 6px; height: 6px; border-radius: 50%; background: #36e07a; box-shadow: 0 0 8px #36e07a; animation: pulse 1.6s infinite; }
+
+/* Pill -> techier */
+.pill { font-family: var(--mono); text-transform: uppercase; font-size: 0.7rem; }
+
+/* Glowing hero name */
+.hero__name { text-shadow: 0 0 38px rgba(240, 54, 44, 0.18); }
+.hero__name:hover { animation: glitch 0.4s steps(2) 1; }
+@keyframes glitch { 0%{ text-shadow: 2px 0 var(--red), -2px 0 #5a78ff; } 50%{ text-shadow: -2px 0 var(--red), 2px 0 #5a78ff; } 100%{ text-shadow: 0 0 38px rgba(240,54,44,0.18); } }
+
+/* Typing caret */
+.type-caret { display: inline-block; width: 9px; height: 1.05em; background: var(--red); margin-left: 4px; transform: translateY(2px); animation: caretBlink 1s steps(1) infinite; box-shadow: 0 0 10px var(--glow); }
+@keyframes caretBlink { 50% { opacity: 0; } }
+
+/* Mono section numbers */
+.section__no { font-family: var(--mono); font-weight: 700; color: var(--muted-dim); margin-right: 4px; }
+
+/* Reactive glow on cards */
+.timeline__card:hover, .edu__card:hover, a.contact__card:hover, .project:hover {
+  box-shadow: 0 0 0 1px rgba(240,54,44,0.25), 0 18px 50px -10px var(--glow);
+}
+.chip:hover { box-shadow: 0 0 16px -2px var(--glow); }
+.timeline__date, .edu__year { font-family: var(--mono); }
+
+/* Animated gradient border on featured project */
+.project { position: relative; }
+.project::before {
+  content: ""; position: absolute; inset: -1px; border-radius: var(--radius); padding: 1px; z-index: 0;
+  background: conic-gradient(from var(--ang, 0deg), transparent 0%, var(--red) 12%, transparent 28%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 0.4s; animation: spinBorder 5s linear infinite;
+}
+.project:hover::before { opacity: 1; }
+.project > * { position: relative; z-index: 1; }
+@property --ang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes spinBorder { to { --ang: 360deg; } }
+
+/* Responsive: keep tech layer tidy on small screens */
+@media (max-width: 720px) {
+  .hud, .hero__readout { display: none; }
+  .tech-bg__grid { -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 70%); mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 70%); }
+}
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .tech-bg__glow, .tech-bg__spot, .pill__dot, .hero__readout-item i, .type-caret, .project::before { animation: none; }
 }

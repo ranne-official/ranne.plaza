@@ -70,3 +70,72 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 revealEls.forEach(el => io.observe(el));
+
+// ===== Scroll progress bar =====
+const scrollBar = document.getElementById("scrollBar");
+if (scrollBar) {
+  const updateBar = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    scrollBar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  };
+  updateBar();
+  window.addEventListener("scroll", updateBar, { passive: true });
+}
+
+// ===== Hero mouse spotlight =====
+const hero = document.getElementById("home");
+const heroSpot = document.getElementById("heroSpot");
+if (hero && heroSpot && window.matchMedia("(pointer: fine)").matches) {
+  hero.addEventListener("mousemove", (e) => {
+    const r = hero.getBoundingClientRect();
+    heroSpot.style.setProperty("--mx", ((e.clientX - r.left) / r.width) * 100 + "%");
+    heroSpot.style.setProperty("--my", ((e.clientY - r.top) / r.height) * 100 + "%");
+  });
+}
+
+// ===== Typing role effect =====
+const roleEl = document.getElementById("roleType");
+if (roleEl) {
+  const roles = [
+    "Information Systems Graduate",
+    "CRM & Funnel Builder",
+    "Graphic Designer",
+    "Customer Support Specialist",
+    "Video Editor"
+  ];
+  let ri = 0, ci = 0, deleting = false;
+  const tick = () => {
+    const word = roles[ri];
+    ci += deleting ? -1 : 1;
+    roleEl.textContent = word.slice(0, ci);
+    let delay = deleting ? 45 : 90;
+    if (!deleting && ci === word.length) { delay = 1600; deleting = true; }
+    else if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % roles.length; delay = 350; }
+    setTimeout(tick, delay);
+  };
+  tick();
+}
+
+// ===== Count-up stats =====
+const counters = document.querySelectorAll(".stat__num[data-count]");
+const countIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.count, 10) || 0;
+    const suffix = el.dataset.suffix || "";
+    const dur = 1200;
+    let start = null;
+    const step = (t) => {
+      if (start === null) start = t;
+      const p = Math.min((t - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    countIO.unobserve(el);
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => countIO.observe(c));

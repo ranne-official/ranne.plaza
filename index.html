@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script>
     // Apply saved/system theme before first paint to avoid flash
@@ -24,6 +24,11 @@
   </script>
 </head>
 <body>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
+  <!-- Film grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
 
   <!-- ===== NAV ===== -->
   <header class="nav" id="nav">
@@ -53,13 +58,27 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="home">
+    <!-- Tech background layers -->
+    <div class="tech-bg" id="techBg" aria-hidden="true">
+      <div class="tech-bg__grid"></div>
+      <div class="tech-bg__glow tech-bg__glow--1"></div>
+      <div class="tech-bg__glow tech-bg__glow--2"></div>
+      <div class="tech-bg__spot" id="heroSpot"></div>
+      <div class="tech-bg__scan"></div>
+    </div>
+    <!-- HUD viewfinder corners -->
+    <div class="hud" aria-hidden="true">
+      <span class="hud__c hud__c--tl"></span><span class="hud__c hud__c--tr"></span>
+      <span class="hud__c hud__c--bl"></span><span class="hud__c hud__c--br"></span>
+    </div>
+
     <div class="hero__photo">
       <img src="assets/profile.jpg" alt="Ranne R. Plaza" />
     </div>
     <div class="hero__inner">
       <span class="pill"><i class="pill__dot"></i> Available for work</span>
-      <h1 class="hero__name">RANNE</h1>
-      <p class="hero__role"><span class="hero__role-line"></span> Information Systems Graduate, Philippines</p>
+      <h1 class="hero__name" data-text="RANNE">RANNE</h1>
+      <p class="hero__role"><span class="hero__role-line"></span> <span id="roleType"></span><span class="type-caret"></span></p>
 
       <div class="hero__bio">
         <span class="hero__quote">&#10078;</span>
@@ -77,13 +96,20 @@
         </div>
       </div>
     </div>
+
+    <div class="hero__readout" aria-hidden="true">
+      <span class="hero__readout-item"><i></i> SYS://ONLINE</span>
+      <span class="hero__readout-item">LAT 8.95°N · LON 125.54°E</span>
+      <span class="hero__readout-item">BUTUAN CITY · PH</span>
+    </div>
+
     <a href="#contact" class="hero__cta">GET IN TOUCH</a>
   </section>
 
   <!-- ===== ABOUT ===== -->
   <section class="section" id="about">
     <div class="container">
-      <p class="section__kicker">About</p>
+      <p class="section__kicker"><span class="section__no">01</span> About</p>
       <h2 class="section__title">Professional Summary</h2>
       <p class="about__text">
         Information Systems graduate with experience in customer service, cold calling,
@@ -93,9 +119,9 @@
         professionally.
       </p>
       <div class="about__stats">
-        <div class="stat"><span class="stat__num">2+</span><span class="stat__label">Years of work experience</span></div>
-        <div class="stat"><span class="stat__num">3</span><span class="stat__label">Professional roles</span></div>
-        <div class="stat"><span class="stat__num">20+</span><span class="stat__label">Core skills</span></div>
+        <div class="stat"><span class="stat__num" data-count="2" data-suffix="+">0</span><span class="stat__label">Years of work experience</span></div>
+        <div class="stat"><span class="stat__num" data-count="3" data-suffix="">0</span><span class="stat__label">Professional roles</span></div>
+        <div class="stat"><span class="stat__num" data-count="20" data-suffix="+">0</span><span class="stat__label">Core skills</span></div>
       </div>
     </div>
   </section>
@@ -103,7 +129,7 @@
   <!-- ===== EXPERIENCE ===== -->
   <section class="section section--alt" id="experience">
     <div class="container">
-      <p class="section__kicker">Experience</p>
+      <p class="section__kicker"><span class="section__no">02</span> Experience</p>
       <h2 class="section__title">Work &amp; Professional History</h2>
       <div class="timeline">
 
@@ -163,7 +189,7 @@
   <!-- ===== SKILLS ===== -->
   <section class="section" id="skills">
     <div class="container">
-      <p class="section__kicker">Skills</p>
+      <p class="section__kicker"><span class="section__no">03</span> Skills</p>
       <h2 class="section__title">What I Bring to the Table</h2>
       <div class="skills__grid">
         <div class="skills__col">
@@ -181,7 +207,7 @@
   <!-- ===== PROJECTS ===== -->
   <section class="section section--alt" id="projects">
     <div class="container">
-      <p class="section__kicker">Projects</p>
+      <p class="section__kicker"><span class="section__no">04</span> Projects</p>
       <h2 class="section__title">Academic Project</h2>
       <article class="project">
         <div class="project__body">
@@ -206,7 +232,7 @@
   <!-- ===== EDUCATION ===== -->
   <section class="section" id="education">
     <div class="container">
-      <p class="section__kicker">Education</p>
+      <p class="section__kicker"><span class="section__no">05</span> Education</p>
       <h2 class="section__title">Academic Background</h2>
       <div class="edu">
         <div class="edu__card">
@@ -226,7 +252,7 @@
   <!-- ===== CONTACT ===== -->
   <section class="section" id="contact">
     <div class="container contact">
-      <p class="section__kicker">Contact</p>
+      <p class="section__kicker"><span class="section__no">06</span> Contact</p>
       <h2 class="section__title">Let's Work Together</h2>
       <p class="contact__lead">Open to opportunities in IT support, customer service, graphic design, and CRM management.</p>
       <div class="contact__cards">
